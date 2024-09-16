@@ -1,0 +1,8 @@
+exportPattern("^[[:alpha:]]+")
+useDynLib(MCMCDiag, .registration = TRUE)
+importFrom(Rcpp, sourceCpp)
+S3method(plot, mcmc_diag)
+S3method(print, mcmc_diag)
+S3method(summary, mcmc_diag)
+importFrom(ggplot2, ggplot, aes, geom_line, theme_minimal, labs)
+export(gelman_rubin_cpp)

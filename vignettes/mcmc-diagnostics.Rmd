@@ -1,0 +1,23 @@
+---
+title: "Using MCMCDiag for MCMC Convergence Diagnostics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using MCMCDiag}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# Check if the package is available, if not, use devtools to load it
+if (!requireNamespace("MCMCDiag", quietly = TRUE)) {
+  if (requireNamespace("devtools", quietly = TRUE)) {
+    devtools::load_all()
+  } else {
+    warning("Package 'MCMCDiag' is not available and devtools is not installed to load it.")
+  }
+}
