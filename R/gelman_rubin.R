@@ -8,9 +8,7 @@
 #' @examples
 #' chains <- list(rnorm(1000), rnorm(1000), rnorm(1000))
 #' gelman_rubin_cpp(chains)
-gelman_rubin <- function(chains, burn_in = 0) {
-  # Implementation using the C++ function
-  chains <- lapply(chains, function(chain) chain[(burn_in + 1):length(chain)])
-  result <- gelman_rubin_cpp(chains)
-  return(result)
+gelman_rubin_cpp <- function(chains) {
+  # This function calls the C++ implementation
+  .Call('_MCMCDiag_gelman_rubin_cpp', PACKAGE = 'MCMCDiag', chains)
 }

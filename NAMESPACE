@@ -1,6 +1,6 @@
 exportPattern("^[[:alpha:]]+")
 useDynLib(MCMCDiag, .registration = TRUE)
-importFrom(Rcpp, sourceCpp)
+importFrom(Rcpp, evalCpp)
 S3method(plot, mcmc_diag)
 S3method(print, mcmc_diag)
 S3method(summary, mcmc_diag)
