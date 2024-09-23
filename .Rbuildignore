@@ -1,6 +1,8 @@
-^.*\.Rproj$
+.Rbuildignore file - ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
 ^cran-comments\.md$
 ^\.github$
+^doc$
+^Meta$

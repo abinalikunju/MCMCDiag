@@ -2,18 +2,29 @@
 % Please edit documentation in R/trace_plot.R
 \name{trace_plot}
 \alias{trace_plot}
-\title{Trace Plot}
+\title{#' Trace Plot
+#'
+#' @param chain MCMC chain
+#' @param parameter Name of the parameter to plot
+#' @return ggplot object
+#' @export
+#' @importFrom ggplot2 ggplot aes geom_line theme_minimal labs
+trace_plot <- function(chain, parameter) {
+df <- data.frame(
+Iteration = seq_along(chain),
+Value = chain
+)}
 \usage{
 trace_plot(chain, parameter)
 }
 \arguments{
-\item{chain}{MCMC chain}
+\item{chain}{Numeric vector representing MCMC chain values}
 
-\item{parameter}{Name of the parameter to plot}
+\item{parameter}{Name of the parameter being plotted}
 }
 \value{
-ggplot object
+A trace plot using base R graphics
 }
 \description{
-Trace Plot
+
 }
