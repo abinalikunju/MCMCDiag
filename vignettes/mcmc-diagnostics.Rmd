@@ -1,6 +1,7 @@
 ---
 title: "Using MCMCDiag for MCMC Convergence Diagnostics"
-output: rmarkdown::html_vignette
+#output: rmarkdown::html_vignette
+output: pdf_document
 vignette: >
   %\VignetteIndexEntry{Using MCMCDiag}
   %\VignetteEngine{knitr::rmarkdown}
@@ -21,3 +22,109 @@ if (!requireNamespace("MCMCDiag", quietly = TRUE)) {
     warning("Package 'MCMCDiag' is not available and devtools is not installed to load it.")
   }
 }
+```
+
+## Introduction
+
+The MCMCDiag package provides tools for diagnosing the convergence of posterior distributions generated using MCMC methods. This vignette demonstrates how to use the package to perform convergence diagnostics, including the Gelman-Rubin diagnostic, trace plots, and effective sample size (ESS) calculations. These tools help assess whether MCMC chains have converged and can be used for reliable inference.
+
+## Loading the Package
+Make sure the MCMCDiag package is installed and load it using the following code:
+
+### Install from GitHub
+#### devtools::install_github("abinalikunju/MCMCDiag")
+
+Load the package
+
+#### library(MCMCDiag)
+
+##  Generating MCMC Chains
+
+Follow the following example to generate two MCMC chains with normal distributions
+
+"
+
+set.seed(123)\
+chain1 <- rnorm(1000, mean = 0)\
+chain2 <- rnorm(1000, mean = 0)\
+
+
+chains <- list(chain1, chain2)\
+
+"
+
+## Gelman-Rubin Diagnostic
+
+The Gelman-Rubin diagnostic measures whether multiple chains are mixing well by comparing within-chain and between-chain variances. A value close to 1 indicates convergence.
+
+"
+gr_stat <- gelman_rubin(chains)\
+gr_stat\
+
+"
+
+## Test plan for Gelman-Rubin Diagnostic 
+
+### Well Mixed chains Gelman-Rubin statistic < 1
+
+To test Gelman-Rubin Diagnostic function used in the package, calculate the Gelman-Rubin statistic for a well mixed chain and the value should be less than 1.1.
+
+From the above example, 
+"
+expect_lt(gelman_rubin(chains), 1.1)\
+
+"
+
+ Verify that the Gelman-Rubin statistic is less than 1.1 for well-mixed chains
+
+### Poor Mixed chains Gelman-Rubin statistic > 1
+
+To test Gelman-Rubin Diagnostic function used in the package, calculate the Gelman-Rubin statistic for a poorly mixed chain and the value will be greater than 1.
+
+"
+chains <- list(rnorm(1000), rnorm(1000) + 10)\
+gelman_rubin(chains)\
+
+expect_gt(gelman_rubin(chains), 1.1)\
+
+"
+
+Verify that Gelman-Rubin detects poor convergence by returning a statistic > 1.1
+
+## Trace Plots
+Trace plots are a visual tool to inspect the convergence of MCMC chains over iterations
+
+"
+trace_plot(chain1, "Chain 1")\
+trace_plot(chain2, "Chain 2")\
+
+"
+
+
+### Test Case - Trace Plot Visualization
+
+Ensure that the trace_plot function works correctly with base R for visualizing MCMC chains.
+
+"
+test_that("trace_plot works with base R", {\
+  set.seed(123)\
+  chain <- rnorm(1000)\
+  expect_silent(trace_plot(chain, "Parameter 1"))\
+})\
+
+"
+
+## Testing large datasets
+
+It is important to ensure that the package handles large datasets efficiently. Here's how to test with a large number of samples:
+
+"
+chains <- list(rnorm(100000), rnorm(100000))\
+gelman_rubin(chains)\
+
+"
+
+## Conclusion
+The MCMCDiag package provides essential tools for diagnosing the convergence of 
+MCMC chains. By calculating the Gelman-Rubin statistic and generating trace plots.
+The package also aims to compute the effective sample size, users can ensure that their MCMC chains have converged, enabling accurate Bayesian inference, also the package aims to handle large datasets and long chains efficiently.
