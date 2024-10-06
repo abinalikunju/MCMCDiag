@@ -1,14 +1,15 @@
-#' Gelman-Rubin Diagnostic (C++ Implementation)
+#' Gelman-Rubin Diagnostic
 #'
-#' This function calculates the Gelman-Rubin diagnostic for MCMC convergence using a C++ implementation.
-#'
-#' @param chains A list of MCMC chains. Each chain should be a numeric vector.
-#' @return A numeric value representing the potential scale reduction factor (PSRF).
+#' @param chains A list of MCMC chains
+#' @return A numeric value representing the Gelman-Rubin statistic
 #' @export
-#' @examples
-#' chains <- list(rnorm(1000), rnorm(1000), rnorm(1000))
-#' gelman_rubin_cpp(chains)
-gelman_rubin_cpp <- function(chains) {
-  # This function calls the C++ implementation
-  .Call('_MCMCDiag_gelman_rubin_cpp', PACKAGE = 'MCMCDiag', chains)
+gelman_rubin <- function(chains) {
+  if (!is.list(chains) || length(chains) < 2) {
+    stop("Input must be a list of at least two chains")
+  }
+
+  # Call the C++ function
+  r_hat <- gelman_rubin_cpp(chains)
+  return(r_hat)
 }
+

@@ -1,19 +1,8 @@
-#' #' Calculate Effective Sample Size
-#' #'
-#' #' @param chains List of MCMC chains
-#' #' @return Effective Sample Size
-#' #' @keywords internal
-#' calculate_ess <- function(chains) {
-#'   # Placeholder implementation
-#'   # This should be replaced with a proper ESS calculation
-#'   return(length(chains[[1]]))
-#' }
-
-
 #' Calculate Effective Sample Size (ESS)
 #'
-#' @param chains List of MCMC chains (numeric vectors)
-#' @return Effective Sample Size for the provided chains
+#' @description This function calculates the Effective Sample Size for MCMC chains.
+#' @param chains List of MCMC chains (numeric vectors).
+#' @return Effective Sample Size for the provided chains.
 #' @keywords internal
 calculate_ess <- function(chains) {
   # Placeholder for actual ESS calculation
@@ -30,3 +19,23 @@ calculate_ess <- function(chains) {
   return(ess)
 }
 
+chains <- list(rnorm(1000), rnorm(1000))
+gr_stat <- gelman_rubin(chains)
+print(gr_stat)
+
+
+chain1 <- rnorm(1000)
+chain2 <- rnorm(1000)
+
+trace_plot(chain1, "param1")
+trace_plot(chain2, "param2")
+
+ess <- calculate_ess(chains)
+print(ess)
+
+
+diag_result <- mcmc_diag(chains)
+
+print(diag_result)
+plot(diag_result)
+summary(diag_result)

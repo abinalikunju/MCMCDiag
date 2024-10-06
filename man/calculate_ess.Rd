@@ -2,35 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{calculate_ess}
 \alias{calculate_ess}
-\title{#' Calculate Effective Sample Size
-#'
-#' @param chains List of MCMC chains
-#' @return Effective Sample Size
-#' @keywords internal
-calculate_ess <- function(chains) {Placeholder implementationThis should be replaced with a proper ESS calculation
-
-return(length(chains[\link{1}]))
-}
-Calculate Effective Sample Size (ESS)}
+\title{Calculate Effective Sample Size (ESS)}
 \usage{
 calculate_ess(chains)
 }
 \arguments{
-\item{chains}{List of MCMC chains (numeric vectors)}
+\item{chains}{List of MCMC chains (numeric vectors).}
 }
 \value{
-Effective Sample Size for the provided chains
+Effective Sample Size for the provided chains.
 }
 \description{
-#' Calculate Effective Sample Size
-#'
-#' @param chains List of MCMC chains
-#' @return Effective Sample Size
-#' @keywords internal
-calculate_ess <- function(chains) {Placeholder implementationThis should be replaced with a proper ESS calculation
-
-return(length(chains[\link{1}]))
-}
-Calculate Effective Sample Size (ESS)
+This function calculates the Effective Sample Size for MCMC chains.
 }
 \keyword{internal}
