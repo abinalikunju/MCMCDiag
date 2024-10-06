@@ -41,7 +41,7 @@ plot.mcmc_diag <- function(x, ...) {
   )
 
   # Use ggplot2 for a nicer plot
-  library(ggplot2)
+  #library(ggplot2)
 
   p <- ggplot(df, aes(x = iteration, y = value)) +
     geom_line() +

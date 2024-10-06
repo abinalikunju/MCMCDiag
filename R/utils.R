@@ -14,7 +14,7 @@ calculate_ess <- function(chains) {
   chain <- chains[[1]] # Assuming single chain for simplicity
 
   # Estimate autocorrelation for the chain
-  acf_values <- acf(chain, plot = FALSE)$acf[-1]
+  acf_values <- stats::acf(chain, plot = FALSE)$acf[-1]
 
   # Calculate ESS using the sum of autocorrelation values
   n <- length(chain)

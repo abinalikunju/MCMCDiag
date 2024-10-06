@@ -15,5 +15,5 @@ heidelberger_welch_test(chain, alpha = 0.05)
 A list containing test results
 }
 \description{
-Heidelberger and Welch Test
+This function performs the Heidelberger and Welch diagnostic test on an MCMC chain.
 }
