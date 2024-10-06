@@ -1,7 +1,7 @@
 ---
 title: "Using MCMCDiag for MCMC Convergence Diagnostics"
-#output: rmarkdown::html_vignette
-output: pdf_document
+output: rmarkdown::html_vignette
+#output: pdf_document
 vignette: >
   %\VignetteIndexEntry{Using MCMCDiag}
   %\VignetteEngine{knitr::rmarkdown}
@@ -37,6 +37,10 @@ Make sure the MCMCDiag package is installed and load it using the following code
 Load the package
 
 #### library(MCMCDiag)
+
+How to carry test plan:
+
+#### devtools::test()
 
 ##  Generating MCMC Chains
 
