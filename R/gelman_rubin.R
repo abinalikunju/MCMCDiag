@@ -1,3 +1,7 @@
+#' @useDynLib MCMCDiag, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
+NULL
+
 #' Gelman-Rubin Diagnostic
 #'
 #' @param chains A list of MCMC chains

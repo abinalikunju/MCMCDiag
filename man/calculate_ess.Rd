@@ -15,4 +15,3 @@ Effective Sample Size for the provided chains.
 \description{
 This function calculates the Effective Sample Size for MCMC chains.
 }
-\keyword{internal}
