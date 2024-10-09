@@ -4,7 +4,7 @@
 \alias{trace_plot}
 \title{Generate Trace Plot for MCMC Chain}
 \usage{
-trace_plot(chain, parameter)
+trace_plot(chain, param_name)
 }
 \arguments{
 \item{chain}{Numeric vector representing MCMC chain values.}
