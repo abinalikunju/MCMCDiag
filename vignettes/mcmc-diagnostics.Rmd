@@ -3,7 +3,7 @@ title: "Using MCMCDiag for MCMC Convergence Diagnostics"
 output: rmarkdown::html_vignette
 #output: pdf_document
 vignette: >
-  %\VignetteIndexEntry{Using MCMCDiag}
+  %\VignetteIndexEntry{Using MCMCDiag for MCMC Convergence Diagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
