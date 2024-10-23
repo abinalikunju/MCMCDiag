@@ -2,18 +2,18 @@
 % Please edit documentation in R/trace_plot.R
 \name{trace_plot}
 \alias{trace_plot}
-\title{Generate Trace Plot for MCMC Chain}
+\title{Generate Trace Plot for MCMC Chains}
 \usage{
-trace_plot(chain, param_name)
+trace_plot(chain, param_name, max_points = 10000)
 }
 \arguments{
-\item{chain}{Numeric vector representing MCMC chain values.}
+\item{chains}{List of MCMC chains}
 
-\item{parameter}{Name of the parameter being plotted.}
+\item{param_names}{Vector of parameter names}
 }
 \value{
-A trace plot using base R graphics.
+A ggplot object
 }
 \description{
-This function generates a trace plot for a given MCMC chain.
+Generate Trace Plot for MCMC Chains
 }

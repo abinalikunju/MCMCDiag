@@ -7,13 +7,15 @@
 heidelberger_welch_test(chain, alpha = 0.05)
 }
 \arguments{
-\item{chain}{A numeric vector representing an MCMC chain}
+\item{chain}{A numeric vector representing an MCMC chain.}
 
-\item{alpha}{Significance level for the test (default 0.05)}
+\item{alpha}{Significance level for the stationarity test (default 0.05).}
 }
 \value{
-A list containing test results
+A list containing test results: stationarity (logical), halfwidth_test,
+p_value, and converged_iteration.
 }
 \description{
 This function performs the Heidelberger and Welch diagnostic test on an MCMC chain.
+It tests for stationarity and provides additional diagnostic information.
 }

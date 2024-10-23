@@ -1,12 +1,17 @@
-#' Generate Trace Plot for MCMC Chain
+#' Generate Trace Plot for MCMC Chains
 #'
-#' @description This function generates a trace plot for a given MCMC chain.
-#' @param chain Numeric vector representing MCMC chain values.
-#' @param parameter Name of the parameter being plotted.
-#' @return A trace plot using base R graphics.
+#' @param chains List of MCMC chains
+#' @param param_names Vector of parameter names
+#' @return A ggplot object
+#' @import ggplot2
 #' @export
+trace_plot <- function(chain, param_name, max_points = 10000) {
+  n <- length(chain)
+  if (n > max_points) {
+    indices <- seq(1, n, length.out = max_points)
+    chain <- chain[indices]
+  }
 
-trace_plot <- function(chain, param_name) {
   df <- data.frame(
     Iteration = seq_along(chain),
     Value = chain
@@ -14,18 +19,11 @@ trace_plot <- function(chain, param_name) {
 
   ggplot2::ggplot(df, ggplot2::aes(x = Iteration, y = Value)) +
     ggplot2::geom_line() +
+    ggplot2::facet_wrap(~ param_name, nrow = 1) +  # Ensure each parameter is displayed separately
     ggplot2::labs(title = paste("Trace Plot for", param_name),
                   x = "Iteration",
                   y = "Parameter Value")
 }
-# trace_plot <- function(chain, parameter) {
-#   plot(
-#     x = seq_along(chain),
-#     y = chain,
-#     type = "l",
-#     main = paste("Trace Plot for", parameter),
-#     xlab = "Iteration",
-#     ylab = "Parameter Value"
-#   )
-# }
+
+
 

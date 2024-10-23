@@ -2,16 +2,16 @@
 % Please edit documentation in R/mcmc_diag.R
 \name{mcmc_diag}
 \alias{mcmc_diag}
-\title{MCMC Diagnostic Object}
+\title{Comprehensive MCMC Diagnostics}
 \usage{
 mcmc_diag(chains)
 }
 \arguments{
-\item{chains}{List of MCMC chains}
+\item{chains}{A list of MCMC chains}
 }
 \value{
-An object of class "mcmc_diag"
+A list containing diagnostic results
 }
 \description{
-MCMC Diagnostic Object
+Comprehensive MCMC Diagnostics
 }

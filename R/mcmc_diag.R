@@ -1,23 +1,22 @@
-#' MCMC Diagnostic Object
+#' Comprehensive MCMC Diagnostics
 #'
-#' @param chains List of MCMC chains
-#' @return An object of class "mcmc_diag"
+#' @param chains A list of MCMC chains
+#' @return A list containing diagnostic results
 #' @export
 mcmc_diag <- function(chains) {
-  structure(
-    list(
-      chains = chains,
-      gelman_rubin = gelman_rubin(chains),
-      effective_sample_size = calculate_ess(chains)
-    ),
-    class = "mcmc_diag"
+  gr <- gelman_rubin(chains)
+  ess <- calculate_ess(chains)
+
+  result <- list(
+    chains = chains,
+    gelman_rubin = gr,
+    effective_sample_size = ess
   )
+
+  class(result) <- "mcmc_diag"
+  return(result)
 }
 
-#' Print method for mcmc_diag objects
-#'
-#' @param x An object of class "mcmc_diag"
-#' @param ... Further arguments passed to or from other methods
 #' @export
 print.mcmc_diag <- function(x, ...) {
   cat("MCMC Diagnostic Results:\n")
@@ -25,41 +24,29 @@ print.mcmc_diag <- function(x, ...) {
   cat("Effective Sample Size:", x$effective_sample_size, "\n")
 }
 
-#' Plot method for mcmc_diag objects
-#'
-#' @param x An object of class "mcmc_diag"
-#' @param ... Further arguments passed to or from other methods
 #' @export
 plot.mcmc_diag <- function(x, ...) {
-  # Extract the first chain for demonstration
-  chain1 = x$chains[[1]]
+  max_length <- max(sapply(x$chains, length))
 
-  # Create a data frame for plotting
-  df = data.frame(
-    iteration = 1:length(chain1),
-    value = chain1
+  chain_data <- data.frame(
+    Iteration = rep(1:max_length, length(x$chains)),
+    Value = unlist(lapply(x$chains, function(chain) {
+      c(chain, rep(NA, max_length - length(chain)))
+    })),
+    Chain = rep(seq_along(x$chains), each = max_length)
   )
 
-  # Use ggplot2 for a nicer plot
-  #library(ggplot2)
-
-  p <- ggplot(df, aes(x = iteration, y = value)) +
-    geom_line() +
-    theme_minimal() +
-    labs(title = "Trace Plot of MCMC Chain",
-         x = "Iteration",
-         y = "Parameter Value")
-
-  print(p)
+  ggplot2::ggplot(chain_data, ggplot2::aes(x = Iteration, y = Value, color = factor(Chain))) +
+    ggplot2::geom_line() +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(title = "MCMC Diagnostic Plots",
+                  x = "Iteration",
+                  y = "Parameter Value",
+                  color = "Chain")
 }
 
-#' Summary method for mcmc_diag objects
-#'
-#' @param object An object of class "mcmc_diag"
-#' @param ... Further arguments passed to or from other methods
 #' @export
 summary.mcmc_diag <- function(object, ...) {
-  # Implementation of summary statistics
   cat("Summary of MCMC Diagnostics:\n")
   cat("Number of chains:", length(object$chains), "\n")
   cat("Chain length:", length(object$chains[[1]]), "\n")
