@@ -5,16 +5,25 @@
 #' @return A ggplot object
 #' @import ggplot2
 #' @export
-trace_plot <- function(chains, param_names) {
+trace_plot <- function(chain, param_name, max_points = 10000) {
+  n <- length(chain)
+  if (n > max_points) {
+    indices <- seq(1, n, length.out = max_points)
+    chain <- chain[indices]
+  }
+
   df <- data.frame(
-    Iteration = rep(seq_along(chains[[1]]), length(chains)),
-    Value = unlist(chains),
-    Chain = factor(rep(seq_along(chains), each = length(chains[[1]])))
+    Iteration = seq_along(chain),
+    Value = chain
   )
 
-  ggplot(df, aes(x = Iteration, y = Value, color = Chain)) +
-    geom_line() +
-    facet_wrap(~ rep(param_names, each = length(chains[[1]]) * length(chains)), scales = "free_y") +
-    labs(title = "Trace Plots", x = "Iteration", y = "Parameter Value") +
-    theme_minimal()
+  ggplot2::ggplot(df, ggplot2::aes(x = Iteration, y = Value)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap(~ param_name, nrow = 1) +  # Ensure each parameter is displayed separately
+    ggplot2::labs(title = paste("Trace Plot for", param_name),
+                  x = "Iteration",
+                  y = "Parameter Value")
 }
+
+
+

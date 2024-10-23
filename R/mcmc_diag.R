@@ -26,7 +26,23 @@ print.mcmc_diag <- function(x, ...) {
 
 #' @export
 plot.mcmc_diag <- function(x, ...) {
-  trace_plot(x$chains, param_names = paste("Parameter", seq_along(x$chains[[1]])))
+  max_length <- max(sapply(x$chains, length))
+
+  chain_data <- data.frame(
+    Iteration = rep(1:max_length, length(x$chains)),
+    Value = unlist(lapply(x$chains, function(chain) {
+      c(chain, rep(NA, max_length - length(chain)))
+    })),
+    Chain = rep(seq_along(x$chains), each = max_length)
+  )
+
+  ggplot2::ggplot(chain_data, ggplot2::aes(x = Iteration, y = Value, color = factor(Chain))) +
+    ggplot2::geom_line() +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(title = "MCMC Diagnostic Plots",
+                  x = "Iteration",
+                  y = "Parameter Value",
+                  color = "Chain")
 }
 
 #' @export

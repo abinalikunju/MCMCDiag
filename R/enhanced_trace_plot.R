@@ -5,28 +5,22 @@
 #' @return A ggplot object
 #' @import ggplot2
 #' @export
-enhanced_trace_plot <- function(chains, param_names) {
-  n_chains <- length(chains)
-  n_params <- length(param_names)
+enhanced_trace_plot <- function(chains, parameter_names) {
+  max_length <- max(sapply(chains, length))
 
-  plot_data <- data.frame()
-  for (i in 1:n_chains) {
-    chain_data <- as.data.frame(chains[[i]])
-    chain_data$Iteration <- 1:nrow(chain_data)
-    chain_data$Chain <- factor(i)
-    plot_data <- rbind(plot_data, chain_data)
-  }
+  df <- data.frame(
+    Iteration = rep(1:max_length, length(chains)),
+    Value = unlist(lapply(chains, function(x) c(x, rep(NA, max_length - length(x))))),
+    Chain = rep(seq_along(chains), each = max_length),
+    Parameter = rep(parameter_names, each = max_length * length(chains))
+  )
 
-  plots <- list()
-  for (i in 1:n_params) {
-    p <- ggplot(plot_data, aes(x = Iteration, y = plot_data[,i], color = Chain)) +
-      geom_line() +
-      labs(title = paste("Trace Plot for", param_names[i]),
-           y = param_names[i]) +
-      theme_minimal()
-    plots[[i]] <- p
-  }
-
-  return(plots)
+  ggplot2::ggplot(df, ggplot2::aes(x = Iteration, y = Value, color = factor(Chain))) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap(~ Parameter, scales = "free_y") +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(title = "Trace Plots for Multiple Chains",
+                  x = "Iteration",
+                  y = "Parameter Value",
+                  color = "Chain")
 }
-

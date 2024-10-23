@@ -7,15 +7,29 @@
 #' @param alpha Significance level for the test (default 0.05)
 #' @return A list containing test results
 #' @export
+# Updated Heidelberger and Welch Test
 heidelberger_welch_test <- function(chain, alpha = 0.05) {
-  # Placeholder implementation
   n <- length(chain)
+  half_n <- floor(n / 2)
+
+  # Test for stationarity: compare the first and second halves of the chain
+  first_half <- chain[1:half_n]
+  second_half <- chain[(half_n + 1):n]
+
+  mean_diff <- abs(mean(first_half) - mean(second_half))
+  var_pooled <- sqrt(var(first_half) / length(first_half) + var(second_half) / length(second_half))
+
+  z_stat <- mean_diff / var_pooled
+  p_value <- 2 * (1 - pnorm(abs(z_stat)))
+
+  # Heidelberger-Welch diagnostic results
   result <- list(
-    stationarity = stats::runif(1) > 0.5,  # Simplified stationarity check
-    halfwidth_test = runif(1) > 0.5,  # Simplified halfwidth test
-    p_value = runif(1),
-    converged_iteration = sample(1:n, 1)
+    stationarity = p_value > alpha,
+    halfwidth_test = mean(chain) - 2 * var(chain),
+    p_value = p_value,
+    converged_iteration = which.max(cumsum(abs(diff(chain))) > alpha)
   )
+
   return(result)
 }
 
@@ -26,13 +40,17 @@ heidelberger_welch_test <- function(chain, alpha = 0.05) {
 #' @param last Proportion of chain to use for last segment (default 0.5)
 #' @return A numeric value representing the Geweke statistic
 #' @export
+
 geweke_diagnostic <- function(chain, first = 0.1, last = 0.5) {
   n <- length(chain)
-  first_segment <- chain[1:(n * first)]
-  last_segment <- chain[(n - n * last + 1):n]
 
+  # First and last sections of the chain
+  first_segment <- chain[1:floor(first * n)]
+  last_segment <- chain[floor((1 - last) * n):n]
+
+  # Geweke statistic
   z_score <- (mean(first_segment) - mean(last_segment)) /
-    sqrt(var(first_segment)/length(first_segment) + var(last_segment)/length(last_segment))
+    sqrt(var(first_segment) / length(first_segment) + var(last_segment) / length(last_segment))
 
   return(z_score)
 }
@@ -63,11 +81,21 @@ enhanced_trace_plot <- function(chains, parameter_names) {
 }
 
 plot.mcmc_diag <- function(x, ...) {
-  ggplot2::ggplot(x$data, ggplot2::aes(x = iteration, y = value)) +
+  max_length <- max(sapply(x$chains, length))
+
+  chain_data <- data.frame(
+    Iteration = rep(1:max_length, length(x$chains)),
+    Value = unlist(lapply(x$chains, function(chain) {
+      c(chain, rep(NA, max_length - length(chain)))
+    })),
+    Chain = rep(seq_along(x$chains), each = max_length)
+  )
+
+  ggplot2::ggplot(chain_data, ggplot2::aes(x = Iteration, y = Value, color = factor(Chain))) +
     ggplot2::geom_line() +
-    ggplot2::facet_wrap(~ parameter, scales = "free_y") +
     ggplot2::theme_minimal() +
     ggplot2::labs(title = "MCMC Diagnostic Plots",
                   x = "Iteration",
-                  y = "Parameter Value")
+                  y = "Parameter Value",
+                  color = "Chain")
 }

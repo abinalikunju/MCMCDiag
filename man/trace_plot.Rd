@@ -4,7 +4,7 @@
 \alias{trace_plot}
 \title{Generate Trace Plot for MCMC Chains}
 \usage{
-trace_plot(chains, param_names)
+trace_plot(chain, param_name, max_points = 10000)
 }
 \arguments{
 \item{chains}{List of MCMC chains}

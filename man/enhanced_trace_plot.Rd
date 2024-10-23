@@ -5,14 +5,12 @@
 \alias{enhanced_trace_plot}
 \title{Enhanced Trace Plot for Multiple Chains}
 \usage{
-enhanced_trace_plot(chains, param_names)
+enhanced_trace_plot(chains, parameter_names)
 
-enhanced_trace_plot(chains, param_names)
+enhanced_trace_plot(chains, parameter_names)
 }
 \arguments{
 \item{chains}{A list of MCMC chains}
-
-\item{param_names}{A vector of parameter names}
 
 \item{parameter_names}{A vector of parameter names}
 }
