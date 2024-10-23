@@ -1,37 +1,48 @@
-
 #' Heidelberger and Welch Test
 #'
 #' This function performs the Heidelberger and Welch diagnostic test on an MCMC chain.
+#' It tests for stationarity and provides additional diagnostic information.
 #'
-#' @param chain A numeric vector representing an MCMC chain
-#' @param alpha Significance level for the test (default 0.05)
-#' @return A list containing test results
+#' @param chain A numeric vector representing an MCMC chain.
+#' @param alpha Significance level for the stationarity test (default 0.05).
+#' @return A list containing test results: stationarity (logical), halfwidth_test,
+#' p_value, and converged_iteration.
 #' @export
-# Updated Heidelberger and Welch Test
 heidelberger_welch_test <- function(chain, alpha = 0.05) {
   n <- length(chain)
   half_n <- floor(n / 2)
 
-  # Test for stationarity: compare the first and second halves of the chain
+  if (n < 2) {
+    stop("The MCMC chain must contain at least two iterations")
+  }
+
+  # Split chain into two halves for the stationarity test
   first_half <- chain[1:half_n]
   second_half <- chain[(half_n + 1):n]
 
+  # Calculate the mean difference between the two halves
   mean_diff <- abs(mean(first_half) - mean(second_half))
   var_pooled <- sqrt(var(first_half) / length(first_half) + var(second_half) / length(second_half))
 
+  # Z-statistic for stationarity test
   z_stat <- mean_diff / var_pooled
-  p_value <- 2 * (1 - pnorm(abs(z_stat)))
+  p_value <- 2 * (1 - pnorm(abs(z_stat)))  # Two-tailed test
 
-  # Heidelberger-Welch diagnostic results
+  # Identify converged iteration: iteration at which cumulative diff > alpha
+  conv_iter <- which.max(cumsum(abs(diff(chain))) > alpha)
+  converged_iteration <- ifelse(length(conv_iter) > 0 && conv_iter > 1, conv_iter, NA)
+
+  # Result of Heidelberger-Welch diagnostic
   result <- list(
-    stationarity = p_value > alpha,
-    halfwidth_test = mean(chain) - 2 * var(chain),
-    p_value = p_value,
-    converged_iteration = which.max(cumsum(abs(diff(chain))) > alpha)
+    stationarity = p_value > alpha,  # TRUE if chain is stationary
+    halfwidth_test = mean(chain) - 2 * sqrt(var(chain)),  # Halfwidth test value
+    p_value = p_value,  # P-value for stationarity test
+    converged_iteration = converged_iteration  # Iteration where convergence occurs
   )
 
   return(result)
 }
+
 
 #' Geweke Diagnostic
 #' @importFrom stats var

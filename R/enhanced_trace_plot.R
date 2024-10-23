@@ -1,7 +1,7 @@
 #' Enhanced Trace Plot
 #'
 #' @param chains A list of MCMC chains
-#' @param param_names A vector of parameter names
+#' @param parameter_names A vector of parameter names
 #' @return A ggplot object
 #' @import ggplot2
 #' @export
