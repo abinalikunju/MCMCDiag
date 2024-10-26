@@ -14,12 +14,13 @@ trace_plot <- function(chain, param_name, max_points = 10000) {
 
   df <- data.frame(
     Iteration = seq_along(chain),
-    Value = chain
+    Value = chain,
+    Parameter = rep(param_name, length(chain))  # Add this line
   )
 
   ggplot2::ggplot(df, ggplot2::aes(x = Iteration, y = Value)) +
     ggplot2::geom_line() +
-    ggplot2::facet_wrap(~ param_name, nrow = 1) +  # Ensure each parameter is displayed separately
+    ggplot2::facet_wrap(~ Parameter, nrow = 1) +  # Changed param_name to Parameter
     ggplot2::labs(title = paste("Trace Plot for", param_name),
                   x = "Iteration",
                   y = "Parameter Value")
